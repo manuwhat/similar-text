@@ -53,13 +53,14 @@ namespace EZAMA{
             if ($insensitive) {
                 $a=self::strtolower($a);
                 $b=self::strtolower($b);
+            } else {
+                $a=self::split($a);
+                $b=self::split($b);
             }
             /* prevent bad types and useless memory usage due to for example array instead of simple boolean */
             unset($insensitive);
             $getParts=(bool)$getParts;
             /*  ******************************************************************************************** */
-            $a=self::split($a);
-            $b=self::split($b);
             $ca=count($a);
             $cb=count($b);
             if ($ca<$cb) {
@@ -72,6 +73,7 @@ namespace EZAMA{
         
         protected static function _check($a, $b, $getParts, $round)
         {
+            $diff=array();
             if ($getParts) {
                 $diff[]=array_diff($a, $b);
                 $diff[]=array_diff($b, $a);
@@ -84,6 +86,7 @@ namespace EZAMA{
         
         protected static function getStats($ca, $b, $diff, $getParts, $round)
         {
+            $stats=array();
             if ($getParts) {
                 $stats['similar']=round(count($diff[2])*100/$ca, $round);
                 $stats['substr']=$diff[3];
@@ -103,6 +106,7 @@ namespace EZAMA{
 
         protected static function getParts($b, &$c=0)
         {
+            $parts=array();
             $tmp='';
             $c=0;
             foreach ($b as $k=>$v) {
@@ -134,24 +138,29 @@ namespace EZAMA{
         
         protected static function strtolower($str)
         {
-            return join(
-                array_map(
-                    function ($val) {
-                        if (self::is_ascii($val)) {
-                            return strtolower($val);
-                        }
-                        return $val;
-                    },
-                    self::split($str)
-            )
-                        )
-                       ;
+            $split=self::split($str);
+            if (is_array($split)) {
+                return
+                    array_map(
+                        function ($val) {
+                            if (self::is_ascii($val)) {
+                                return strtolower($val);
+                            }
+                            return $val;
+                        },
+                        $split
+                )
+        
+                           ;
+            } else {
+                return array();
+            }
         }
         
         protected static function split($str)
         {
             if (!is_string($str)) {
-                return false;
+                return array();
             }
             static $split=[];
             static $old='';
