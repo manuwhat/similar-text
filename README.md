@@ -1,7 +1,10 @@
 PHP Similar Text Percentage: Compare two strings to compute a similarity score
 ==============================================================================
 
-
+[![Build Status](https://travis-ci.org/manuwhat/similar-text.svg?branch=master)](https://travis-ci.org/manuwhat/similar-text)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/manuwhat/similar-text/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/manuwhat/similar-text/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/manuwhat/similar-text/badges/build.png?b=master)](https://scrutinizer-ci.com/g/manuwhat/similar-text/build-status/master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/manuwhat/similar-text/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 Library which help to Compare two strings to compute a similarity score and get stats on how linked are the strings.
 
 
