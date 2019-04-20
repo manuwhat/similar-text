@@ -12,10 +12,10 @@ namespace{
     function SimilarText(
         $firstString,
         $secondString,
-        $round=2,
-        $insensitive=true,
-        &$stats=false,
-        $getParts=false
+        $round = 2,
+        $insensitive = true,
+        &$stats = false,
+        $getParts = false
                         ) {
         return EZAMA\similar_text::similarText(
             $firstString,
@@ -45,81 +45,81 @@ namespace EZAMA{
         private function __construct()
         {
         }
-        public static function similarText($a, $b, $round=2, $insensitive=true, &$stats=false, $getParts=false)
+        public static function similarText($a, $b, $round = 2, $insensitive = true, &$stats = false, $getParts = false)
         {
-            if (!is_string($a)||!is_string($b)) {
+            if (!is_string($a) || !is_string($b)) {
                 return false;
             }
             if ($insensitive) {
-                $a=self::strtolower($a);
-                $b=self::strtolower($b);
+                $a = self::strtolower($a);
+                $b = self::strtolower($b);
             } else {
-                $a=self::split($a);
-                $b=self::split($b);
+                $a = self::split($a);
+                $b = self::split($b);
             }
             /* prevent bad types and useless memory usage due to for example array instead of simple boolean */
             unset($insensitive);
-            $getParts=(bool)$getParts;
+            $getParts = (bool) $getParts;
             /*  ******************************************************************************************** */
-            $ca=count($a);
-            $cb=count($b);
-            if ($ca<$cb) {
-                $stats=self::getStats($cb, $a, self::_check($a, $b, $getParts, $round), $getParts, $round);
+            $ca = count($a);
+            $cb = count($b);
+            if ($ca < $cb) {
+                $stats = self::getStats($cb, $a, self::_check($a, $b, $getParts, $round), $getParts, $round);
             } else {
-                $stats=self::getStats($ca, $b, self::_check($b, $a, $getParts, $round), $getParts, $round);
+                $stats = self::getStats($ca, $b, self::_check($b, $a, $getParts, $round), $getParts, $round);
             }
             return $stats['similar'];
         }
         
         protected static function _check($a, $b, $getParts, $round)
         {
-            $diff=array();
+            $diff = array();
             if ($getParts) {
-                $diff[]=array_diff($a, $b);
-                $diff[]=array_diff($b, $a);
+                $diff[] = array_diff($a, $b);
+                $diff[] = array_diff($b, $a);
             }
-            $diff[]=array_intersect($a, $b);
-            $diff[]=round(count(array_intersect(self::getParts($a, $c), self::getParts($b)))/$c*100, $round);
-            $diff[]=$a===$b;
+            $diff[] = array_intersect($a, $b);
+            $diff[] = round(count(array_intersect(self::getParts($a, $c), self::getParts($b))) / $c * 100, $round);
+            $diff[] = $a === $b;
             return $diff;
         }
         
         protected static function getStats($ca, $b, $diff, $getParts, $round)
         {
-            $stats=array();
+            $stats = array();
             if ($getParts) {
-                $stats['similar']=round(count($diff[2])*100/$ca, $round);
-                $stats['substr']=$diff[3];
-                $stats['contain']=($diff[2]===$b)?true:false;
-                $stats['equal']=$diff[4];
-                $stats['a-b']=$diff[0];
-                $stats['b-a']=$diff[1];
-                $stats['a&b']=$diff[2];
+                $stats['similar'] = round(count($diff[2]) * 100 / $ca, $round);
+                $stats['substr'] = $diff[3];
+                $stats['contain'] = ($diff[2] === $b) ?true:false;
+                $stats['equal'] = $diff[4];
+                $stats['a-b'] = $diff[0];
+                $stats['b-a'] = $diff[1];
+                $stats['a&b'] = $diff[2];
             } else {
-                $stats['similar']=round(count($diff[0])*100/$ca, $round);
-                $stats['substr']=$diff[1];
-                $stats['contain']=($diff[0]===$b)?true:false;
-                $stats['equal']=$diff[2];
+                $stats['similar'] = round(count($diff[0]) * 100 / $ca, $round);
+                $stats['substr'] = $diff[1];
+                $stats['contain'] = ($diff[0] === $b) ?true:false;
+                $stats['equal'] = $diff[2];
             }
             return $stats;
         }
 
-        protected static function getParts($b, &$c=0)
+        protected static function getParts($b, &$c = 0)
         {
-            $parts=array();
-            $tmp='';
-            $c=0;
+            $parts = array();
+            $tmp = '';
+            $c = 0;
             foreach ($b as $k=>$v) {
-                $tmp.=$v;
+                $tmp .= $v;
                 if (ctype_space($v)) {
-                    $parts[]=$tmp;
-                    $parts[]=$v;
-                    $c+=2;
-                    $tmp='';
+                    $parts[] = $tmp;
+                    $parts[] = $v;
+                    $c += 2;
+                    $tmp = '';
                 }
             }
             if (!empty($tmp)) {
-                $parts[]=$tmp;
+                $parts[] = $tmp;
                 $c++;
             }
             return $parts;
@@ -138,11 +138,11 @@ namespace EZAMA{
         
         protected static function strtolower($str)
         {
-            $split=self::split($str);
+            $split = self::split($str);
             if (is_array($split)) {
                 return
                     array_map(
-                        function ($val) {
+                        function($val) {
                             if (self::is_ascii($val)) {
                                 return strtolower($val);
                             }
@@ -151,7 +151,7 @@ namespace EZAMA{
                         $split
                 )
         
-                           ;
+                            ;
             } else {
                 return array();
             }
@@ -162,25 +162,25 @@ namespace EZAMA{
             if (!is_string($str)) {
                 return array();
             }
-            static $split=[];
-            static $old='';
-            if ($old===$str) {
+            static $split = [];
+            static $old = '';
+            if ($old === $str) {
                 return $split;
             } else {
-                $old=$str;
-                $split=preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
+                $old = $str;
+                $split = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
                 return $split;
             }
         }
         
         public static function areAnagrams($a, $b)
         {
-            return  self::similarText($a, $b, 2, true, $check)?$check['similar'] === 100.0&&$check['contain']===true:false;
+            return  self::similarText($a, $b, 2, true, $check) ? $check['similar'] === 100.0 && $check['contain'] === true : false;
         }
         
         public static function similarButNotEqual($a, $b)
         {
-            return   self::similarText($a, $b, 2, true, $check)&&is_array($check)&&$check['equal']===true?false:true;
+            return   self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['equal'] === true ?false:true;
         }
     }
 }
