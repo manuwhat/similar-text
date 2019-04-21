@@ -17,7 +17,7 @@ namespace EZAMA{
         private function __construct()
         {
         }
-        public static function similarText($a, $b, $round = 2, $insensitive = true, &$stats = false, $getParts = false, $checkposition=false)
+        public static function similarText($a, $b, $round = 2, $insensitive = true, &$stats = false, $getParts = false, $checkposition = false)
         {
             if (!is_string($a) || !is_string($b)) {
                 return false;
@@ -43,14 +43,14 @@ namespace EZAMA{
             return $stats['similar'];
         }
         
-        protected static function _check($a, $b, $getParts, $round, $checkposition=false)
+        protected static function _check($a, $b, $getParts, $round, $checkposition = false)
         {
             $diff = array();
             if ($getParts) {
                 $diff[] = array_diff($a, $b);
                 $diff[] = array_diff($b, $a);
             }
-            $diff[] = $checkposition?array_intersect_assoc($a, $b):array_intersect($a, $b);
+            $diff[] = $checkposition ?array_intersect_assoc($a, $b) : array_intersect($a, $b);
             $diff[] = round(count(array_intersect(self::getParts($a, $c), self::getParts($b))) / $c * 100, $round);
             $diff[] = $a === $b;
             return $diff;
@@ -82,7 +82,7 @@ namespace EZAMA{
             $tmp = '';
             $c = 0;
             foreach ($b as $k=>$v) {
-                if (ctype_space($v)||ctype_punct($v)) {
+                if (ctype_space($v) || ctype_punct($v)) {
                     $parts[] = $tmp;
                     $parts[] = $v;
                     $c += 2;
@@ -115,7 +115,7 @@ namespace EZAMA{
             if (is_array($split)) {
                 return
                     array_map(
-                        function ($val) {
+                        function($val) {
                             if (self::is_ascii($val)) {
                                 return strtolower($val);
                             }
