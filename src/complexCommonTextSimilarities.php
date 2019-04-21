@@ -12,8 +12,7 @@
 
 namespace EZAMA{
     
-    
-    class commonTextSimilarities extends similar_text
+    class complexCommonTextSimilarities extends simpleCommonTextSimilarities
     {
         const URL_FORMAT_EXTENDED_PATTERN = '/^((https?|ftps?|file):\/\/){0,1}'. // protocol
                                             '(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+'. // username
@@ -53,31 +52,6 @@ namespace EZAMA{
                 return false;
             }
         }
-        
-        public static function areAnagrams($a, $b)
-        {
-            return  self::similarText($a, $b, 2, true, $check)&&$check['similar'] === 100.0 && $check['contain'] === true;
-        }
-        
-        public static function similarButNotEqual($a, $b)
-        {
-            return self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['equal'] === false;
-        }
-        
-        public static function aIsSuperStringOfB($a, $b)
-        {
-            if (strlen($a)>strlen($b)) {
-                return   self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['substr'] === 100.0;
-            } else {
-                return false;
-            }
-        }
-        
-        public static function haveSameRoot($a, $b)
-        {
-            return self::similarText($a, $b, 2, true, $check, true, true) && is_array($check)&&range(0, count($check['a&b'])-1)===array_keys($check['a&b'])/*?true:false*/;
-        }
-        
         public static function areStems($a, $b)
         {
             if (!is_string($a) || !is_string($b)) {
@@ -94,18 +68,34 @@ namespace EZAMA{
             return true;
         }
         
-        public static function wordsReorderOccured($a, $b, $considerPunctuation=true)
+        public static function wordsAddedOrRemoved($a, $b)
         {
-            $filter=function ($v) use ($considerPunctuation) {
-                return $considerPunctuation?!(ctype_space($v)||ctype_punct($v)):!ctype_space($v);
+            if (!is_string($a) || !is_string($b)) {
+                return false;
+            }
+            $filter=function ($v) {
+                return !(ctype_space($v));
             };
-            return self::similarText($a, $b, 2, true, $check, true) &&is_array($check) &&self::wro_filter($check, $filter)?true :false;
+            self::filter($a, $b, $filter, true);
+            return self::waorDiff($a, $b, count($a), count($b));
         }
         
-        private static function wro_filter($check, $filter)
+        private static function filter(&$a, &$b, $filter, $insensitive=true)
         {
-            return  empty(array_filter($check['a-b'], $filter)) && empty(array_filter($check['b-a'], $filter)) &&$check['substr'] &&!$check['equal'];
+            if ($insensitive) {
+                $a = array_filter(self::getParts(self::strtolower($a)), $filter);
+                $b = array_filter(self::getParts(self::strtolower($b)), $filter);
+            } else {
+                $a = array_filter(self::getParts(self::split($a)), $filter);
+                $b = array_filter(self::getParts(self::split($b)), $filter);
+            }
         }
+        
+        private static function waorDiff($a, $b, $ca, $cb)
+        {
+            return (bool)(($ca>$cb)?array_diff_assoc(array_values($a), array_values($b)):array_diff_assoc(array_values($b), array_values($a)));
+        }
+        
         
         public static function punctuactionChangesOccured($a, $b, $insensitive=true, $considerSpace=true)
         {
@@ -141,34 +131,6 @@ namespace EZAMA{
                 }
             }
             return true;
-        }
-        
-        public static function wordsAddedOrRemoved($a, $b)
-        {
-            if (!is_string($a) || !is_string($b)) {
-                return false;
-            }
-            $filter=function ($v) {
-                return !(ctype_space($v));
-            };
-            self::filter($a, $b, $filter, true);
-            return self::waorDiff($a, $b, count($a), count($b));
-        }
-        
-        private static function filter(&$a, &$b, $filter, $insensitive=true)
-        {
-            if ($insensitive) {
-                $a = array_filter(self::getParts(self::strtolower($a)), $filter);
-                $b = array_filter(self::getParts(self::strtolower($b)), $filter);
-            } else {
-                $a = array_filter(self::getParts(self::split($a)), $filter);
-                $b = array_filter(self::getParts(self::split($b)), $filter);
-            }
-        }
-        
-        private static function waorDiff($a, $b, $ca, $cb)
-        {
-            return (bool)(($ca>$cb)?array_diff_assoc(array_values($a), array_values($b)):array_diff_assoc(array_values($b), array_values($a)));
         }
     }
 }

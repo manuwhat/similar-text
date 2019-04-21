@@ -11,7 +11,8 @@
 **/
 namespace{
     use EZAMA\similar_text;
-    use EZAMA\commonTextSimilarities;
+    use EZAMA\simpleCommonTextSimilarities;
+    use EZAMA\complexCommonTextSimilarities;
 
     function SimilarText(
         $firstString,
@@ -35,51 +36,51 @@ namespace{
     
     function areAnagrams($a, $b)
     {
-        return commonTextSimilarities::areAnagrams($a, $b);
+        return simpleCommonTextSimilarities::areAnagrams($a, $b);
     }
     
     function similarButNotEqual($a, $b)
     {
-        return   commonTextSimilarities::similarButNotEqual($a, $b);
+        return   simpleCommonTextSimilarities::similarButNotEqual($a, $b);
     }
     
     function aIsSuperStringOfB($a, $b)
     {
-        return commonTextSimilarities::aIsSuperStringOfB($a, $b);
+        return simpleCommonTextSimilarities::aIsSuperStringOfB($a, $b);
     }
         
     function haveSameRoot($a, $b)
     {
-        return commonTextSimilarities::haveSameRoot($a, $b);
+        return simpleCommonTextSimilarities::haveSameRoot($a, $b);
     }
     
     function wordsReorderOccured($a, $b, $considerPunctuation=true)
     {
-        return commonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
+        return simpleCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
     }
     
     function punctuactionChangesOccured($a, $b, $considerSpace=true)
     {
-        return commonTextSimilarities::punctuactionChangesOccured($a, $b, $considerSpace);
+        return complexCommonTextSimilarities::punctuactionChangesOccured($a, $b, $considerSpace);
     }
     
     function areStems($a, $b)
     {
-        return commonTextSimilarities::areStems($a, $b);
+        return complexCommonTextSimilarities::areStems($a, $b);
     }
     
     function strippedUrl($a, $b)
     {
-        return commonTextSimilarities::strippedUrl($a, $b);
+        return complexCommonTextSimilarities::strippedUrl($a, $b);
     }
     
     function acronymOrExpanded($a, $b)
     {
-        return commonTextSimilarities::acronymOrExpanded($a, $b);
+        return complexCommonTextSimilarities::acronymOrExpanded($a, $b);
     }
     
     function wordsAddedOrRemoved($a, $b)
     {
-        return commonTextSimilarities::wordsAddedOrRemoved($a, $b);
+        return complexCommonTextSimilarities::wordsAddedOrRemoved($a, $b);
     }
 }

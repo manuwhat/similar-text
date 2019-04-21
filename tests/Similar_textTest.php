@@ -1,7 +1,8 @@
 <?php
 namespace Ezama\tests{
     require($dir=dirname(__DIR__)).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'similar_text.php';
-    require $dir.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'commonTextSimilarities.php';
+    require $dir.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'simpleCommonTextSimilarities.php';
+    require $dir.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'complexCommonTextSimilarities.php';
     require $dir.DIRECTORY_SEPARATOR.'similar_text.php';
 
     use PHPUnit\Framework\TestCase;
