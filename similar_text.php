@@ -21,7 +21,7 @@ namespace{
         $insensitive = true,
         &$stats = false,
         $getParts = false,
-        $checkposition=false
+        $checkposition = false
                         ) {
         return similar_text::similarText(
             $firstString,
@@ -54,12 +54,12 @@ namespace{
         return simpleCommonTextSimilarities::haveSameRoot($a, $b);
     }
     
-    function wordsReorderOccured($a, $b, $considerPunctuation=true)
+    function wordsReorderOccured($a, $b, $considerPunctuation = true)
     {
         return simpleCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
     }
     
-    function punctuactionChangesOccured($a, $b, $considerSpace=true)
+    function punctuactionChangesOccured($a, $b, $considerSpace = true)
     {
         return complexCommonTextSimilarities::punctuactionChangesOccured($a, $b, $considerSpace);
     }
