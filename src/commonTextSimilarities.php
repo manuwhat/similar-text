@@ -118,7 +118,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            self::filter($a,$b,$filter,$insensitive);
+            self::filter($a, $b, $filter, $insensitive);
             return empty(array_diff($a, $b));
         }
         
@@ -132,7 +132,12 @@ namespace EZAMA{
                 return !(ctype_space($v)||ctype_punct($v));
             };
             
-            self::filter($a,$b,$filter,true);
+            self::filter($a, $b, $filter, true);
+            return self::aoeStemming($a, $b);
+        }
+        
+        private static function aoeStemming($a, $b)
+        {
             foreach ($a as $index=>$word) {
                 if (!self::haveSameRoot($word, $b[$index])||(isset($a[$index][2])&&isset($b[$index][2]))) {
                     return false;
@@ -149,20 +154,24 @@ namespace EZAMA{
             $filter=function ($v) {
                 return !(ctype_space($v));
             };
-            self::filter($a,$b,$filter,true);
-            $ca=count($a);
-            $cb=count($b);
-            return (bool)(($ca>$cb)?array_diff_assoc(array_values($a), array_values($b)):array_diff_assoc(array_values($b), array_values($a)));
+            self::filter($a, $b, $filter, true);
+            return self::waorDiff($a, $b, count($a), count($b));
         }
-		
-		private static function filter(&$a,&$b,$filter,$insensitive=true){
-			if ($insensitive) {
+        
+        private static function filter(&$a, &$b, $filter, $insensitive=true)
+        {
+            if ($insensitive) {
                 $a = array_filter(self::getParts(self::strtolower($a)), $filter);
                 $b = array_filter(self::getParts(self::strtolower($b)), $filter);
             } else {
                 $a = array_filter(self::getParts(self::split($a)), $filter);
                 $b = array_filter(self::getParts(self::split($b)), $filter);
-            }		
-		}
+            }
+        }
+        
+        private static function waorDiff($a, $b, $ca, $cb)
+        {
+            return (bool)(($ca>$cb)?array_diff_assoc(array_values($a), array_values($b)):array_diff_assoc(array_values($b), array_values($a)));
+        }
     }
 }
