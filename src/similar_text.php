@@ -8,35 +8,7 @@
 * @Repository : https://github.com/manuwhat/similar
 *
 **/
-namespace{
-    function SimilarText(
-        $firstString,
-        $secondString,
-        $round = 2,
-        $insensitive = true,
-        &$stats = false,
-        $getParts = false
-                        ) {
-        return EZAMA\similar_text::similarText(
-            $firstString,
-            $secondString,
-            $round,
-            $insensitive,
-            $stats,
-            $getParts
-                                        );
-    }
-    
-    function areAnagrams($a, $b)
-    {
-        return EZAMA\similar_text::areAnagrams($a, $b);
-    }
-    
-    function similarButNotEqual($a, $b)
-    {
-        return   EZAMA\similar_text::similarButNotEqual($a, $b);
-    }
-}
+
 
 namespace EZAMA{
         
@@ -45,7 +17,7 @@ namespace EZAMA{
         private function __construct()
         {
         }
-        public static function similarText($a, $b, $round = 2, $insensitive = true, &$stats = false, $getParts = false)
+        public static function similarText($a, $b, $round = 2, $insensitive = true, &$stats = false, $getParts = false, $checkposition=false)
         {
             if (!is_string($a) || !is_string($b)) {
                 return false;
@@ -64,21 +36,21 @@ namespace EZAMA{
             $ca = count($a);
             $cb = count($b);
             if ($ca < $cb) {
-                $stats = self::getStats($cb, $a, self::_check($a, $b, $getParts, $round), $getParts, $round);
+                $stats = self::getStats($cb, $a, self::_check($a, $b, $getParts, $round, $checkposition), $getParts, $round);
             } else {
-                $stats = self::getStats($ca, $b, self::_check($b, $a, $getParts, $round), $getParts, $round);
+                $stats = self::getStats($ca, $b, self::_check($b, $a, $getParts, $round, $checkposition), $getParts, $round);
             }
             return $stats['similar'];
         }
         
-        protected static function _check($a, $b, $getParts, $round)
+        protected static function _check($a, $b, $getParts, $round, $checkposition=false)
         {
             $diff = array();
             if ($getParts) {
                 $diff[] = array_diff($a, $b);
                 $diff[] = array_diff($b, $a);
             }
-            $diff[] = array_intersect($a, $b);
+            $diff[] = $checkposition?array_intersect_assoc($a, $b):array_intersect($a, $b);
             $diff[] = round(count(array_intersect(self::getParts($a, $c), self::getParts($b))) / $c * 100, $round);
             $diff[] = $a === $b;
             return $diff;
@@ -110,13 +82,14 @@ namespace EZAMA{
             $tmp = '';
             $c = 0;
             foreach ($b as $k=>$v) {
-                $tmp .= $v;
-                if (ctype_space($v)) {
+                if (ctype_space($v)||ctype_punct($v)) {
                     $parts[] = $tmp;
                     $parts[] = $v;
                     $c += 2;
                     $tmp = '';
+                    continue;
                 }
+                $tmp .= $v;
             }
             if (!empty($tmp)) {
                 $parts[] = $tmp;
@@ -142,7 +115,7 @@ namespace EZAMA{
             if (is_array($split)) {
                 return
                     array_map(
-                        function($val) {
+                        function ($val) {
                             if (self::is_ascii($val)) {
                                 return strtolower($val);
                             }
@@ -172,15 +145,6 @@ namespace EZAMA{
                 return $split;
             }
         }
-        
-        public static function areAnagrams($a, $b)
-        {
-            return  self::similarText($a, $b, 2, true, $check) ? $check['similar'] === 100.0 && $check['contain'] === true : false;
-        }
-        
-        public static function similarButNotEqual($a, $b)
-        {
-            return   self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['equal'] === true ?false:true;
-        }
     }
+    
 }
