@@ -99,15 +99,12 @@ namespace EZAMA{
             $filter=function ($v) use ($considerPunctuation) {
                 return $considerPunctuation?!(ctype_space($v)||ctype_punct($v)):!ctype_space($v);
             };
-            return
-                    self::similarText($a, $b, 2, true, $check, true) &&
-                    is_array($check) &&
-                    empty(array_filter($check['a-b'], $filter)) &&
-                    empty(array_filter($check['b-a'], $filter)) &&
-                    $check['substr'] &&
-                    !$check['equal']
-                    ?true
-                    :false;
+            return self::similarText($a, $b, 2, true, $check, true) &&is_array($check) &&self::wro_filter($check, $filter)?true :false;
+        }
+        
+        private static function wro_filter($check, $filter)
+        {
+            return  empty(array_filter($check['a-b'], $filter)) && empty(array_filter($check['b-a'], $filter)) &&$check['substr'] &&!$check['equal'];
         }
         
         public static function punctuactionChangesOccured($a, $b, $insensitive=true, $considerSpace=true)
