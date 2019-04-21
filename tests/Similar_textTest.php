@@ -16,10 +16,10 @@ namespace Ezama\tests{
             $this->assertTrue(0.0===similarText('qwerty', ';lkjhg'));
             $this->assertTrue(haveSameRoot('qwerty', 'qwertyuiop'));
             $this->assertTrue(wordsReorderOccured('joker is a cloon.', 'a cloon is joker'));
-			$this->assertTrue(similarButNotEqual('qwerty', 'ytrewq'));
-			$this->assertTrue(StrippedUrl('yahoo.com', 'yahoo'));
-			$this->assertTrue(acronymorExpanded('p.d.a', 'personal digital assistant'));
-			$this->assertTrue(wordsAddedOrRemoved('personal digital', 'personal digital assistant'));
+            $this->assertTrue(similarButNotEqual('qwerty', 'ytrewq'));
+            $this->assertTrue(StrippedUrl('yahoo.com', 'yahoo'));
+            $this->assertTrue(acronymorExpanded('p.d.a', 'personal digital assistant'));
+            $this->assertTrue(wordsAddedOrRemoved('personal digital', 'personal digital assistant'));
         }
     }
 }

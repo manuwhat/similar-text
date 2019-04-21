@@ -28,7 +28,8 @@ namespace{
             $round,
             $insensitive,
             $stats,
-            $getParts
+            $getParts,
+            $checkposition
                                         );
     }
     

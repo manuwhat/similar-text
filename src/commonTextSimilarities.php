@@ -37,6 +37,7 @@ namespace EZAMA{
         
         protected static function isUrl($url, &$getDomain='')
         {
+            $matches=array();
             $bool= is_string($url)&&preg_match(self::URL_POSIX_FORMAT, $url)&&preg_match(self::URL_FORMAT_EXTENDED_PATTERN, $url, $matches)/*?true:false*/;
             $getDomain=rtrim($matches[9], '.');
             return $bool;
@@ -117,14 +118,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            if ($insensitive) {
-                $a = array_filter(self::getParts(self::strtolower($a)), $filter);
-                $b = array_filter(self::getParts(self::strtolower($b)), $filter);
-            } else {
-                $a = array_filter(self::getParts(self::split($a)), $filter);
-                $b = array_filter(self::getParts(self::split($b)), $filter);
-            }
-            
+            self::filter($a,$b,$filter,$insensitive);
             return empty(array_diff($a, $b));
         }
         
@@ -138,8 +132,7 @@ namespace EZAMA{
                 return !(ctype_space($v)||ctype_punct($v));
             };
             
-            $a = array_filter(self::getParts(self::strtolower($a)), $filter);
-            $b = array_filter(self::getParts(self::strtolower($b)), $filter);
+            self::filter($a,$b,$filter,true);
             foreach ($a as $index=>$word) {
                 if (!self::haveSameRoot($word, $b[$index])||(isset($a[$index][2])&&isset($b[$index][2]))) {
                     return false;
@@ -156,12 +149,20 @@ namespace EZAMA{
             $filter=function ($v) {
                 return !(ctype_space($v));
             };
-            
-            $a = array_filter(self::getParts(self::strtolower($a)), $filter);
-            $b = array_filter(self::getParts(self::strtolower($b)), $filter);
-			$ca=count($a);
-			$cb=count($b);
+            self::filter($a,$b,$filter,true);
+            $ca=count($a);
+            $cb=count($b);
             return (bool)(($ca>$cb)?array_diff_assoc(array_values($a), array_values($b)):array_diff_assoc(array_values($b), array_values($a)));
         }
+		
+		private static function filter(&$a,&$b,$filter,$insensitive=true){
+			if ($insensitive) {
+                $a = array_filter(self::getParts(self::strtolower($a)), $filter);
+                $b = array_filter(self::getParts(self::strtolower($b)), $filter);
+            } else {
+                $a = array_filter(self::getParts(self::split($a)), $filter);
+                $b = array_filter(self::getParts(self::split($b)), $filter);
+            }		
+		}
     }
 }
