@@ -22,7 +22,7 @@ namespace EZAMA{
         
         public static function similarButNotEqual($a, $b)
         {
-            return self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['equal'] === false;
+            return self::similarText($a, $b, 2, true, $check) && is_array($check)&&$check['similar'] === 100.0 && $check['equal'] === false;
         }
         
         public static function aIsSuperStringOfB($a, $b)
