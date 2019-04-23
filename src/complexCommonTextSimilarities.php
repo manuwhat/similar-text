@@ -38,8 +38,13 @@ namespace EZAMA{
         {
             $matches=array();
             $bool= is_string($url) && preg_match('/\./', $url) && preg_match(self::URL_POSIX_FORMAT, $url) && preg_match(self::URL_FORMAT_EXTENDED_PATTERN, $url, $matches);
-            $getDomain = $bool && ($getDomain = explode('.', parse_url($url, $matches[1] ? PHP_URL_HOST : PHP_URL_PATH))) ? (($c = count($getDomain)) > 1 ? ($getDomain[$c-2]) : '') : '';
+            $getDomain = $bool ? self::getDomain($url, $matches[1]):'';
             return $bool;
+        }
+        
+        protected static function getDomain($url, $match)
+        {
+            return ($getDomain = explode('.', parse_url($url, $match ? PHP_URL_HOST : PHP_URL_PATH))) ? (($c = count($getDomain)) > 1 ? ($getDomain[$c-2]) : '') : '';
         }
         
         public static function strippedUrl($a, $b)
@@ -73,7 +78,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function($v) {
+            $filter = function ($v) {
                 return !(ctype_space($v));
             };
             self::filter($a, $b, $filter, true);
@@ -99,7 +104,7 @@ namespace EZAMA{
         
         public static function punctuactionChangesOccured($a, $b, $insensitive = true, $considerSpace = true)
         {
-            $filter = function($v) use ($considerSpace) {
+            $filter = function ($v) use ($considerSpace) {
                 return $considerSpace ? !(ctype_space($v) || ctype_punct($v)) : !ctype_punct($v);
             };
             if (!is_string($a) || !is_string($b)) {
@@ -115,7 +120,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function($v) {
+            $filter = function ($v) {
                 return !(ctype_space($v) || ctype_punct($v));
             };
             
