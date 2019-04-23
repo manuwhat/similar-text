@@ -59,9 +59,9 @@ namespace{
         return simpleCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
     }
     
-    function punctuactionChangesOccured($a, $b, $considerSpace = true)
+    function punctuationChangesOccured($a, $b, $considerSpace = true)
     {
-        return complexCommonTextSimilarities::punctuactionChangesOccured($a, $b, $considerSpace);
+        return complexCommonTextSimilarities::punctuationChangesOccured($a, $b, $considerSpace);
     }
     
     function areStems($a, $b)
