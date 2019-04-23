@@ -37,9 +37,14 @@ namespace EZAMA{
         protected static function isUrl($url, &$getDomain = '')
         {
             $matches = array();
-            $bool = is_string($url) && preg_match(self::URL_POSIX_FORMAT, $url) && preg_match(self::URL_FORMAT_EXTENDED_PATTERN, $url, $matches)/*?true:false*/;
-            $getDomain = rtrim($matches[9], '.');
+            $bool = is_string($url) && preg_match('/\./', $url) && preg_match(self::URL_POSIX_FORMAT, $url) && preg_match(self::URL_FORMAT_EXTENDED_PATTERN, $url, $matches);
+            $getDomain = $bool ? self::getDomain($url, $matches[1]) : '';
             return $bool;
+        }
+        
+        protected static function getDomain($url, $match)
+        {
+            return ($getDomain = explode('.', parse_url($url, $match ? PHP_URL_HOST : PHP_URL_PATH))) ? (($c = count($getDomain)) > 1 ? ($getDomain[$c - 2]) : '') : '';
         }
         
         public static function strippedUrl($a, $b)
