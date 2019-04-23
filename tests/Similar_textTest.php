@@ -21,8 +21,8 @@ namespace Ezama\tests{
             $this->assertTrue(StrippedUrl('yahoo.com', 'yahoo'));
             $this->assertTrue(acronymorExpanded('p.d.a', 'personal digital assistant'));
             $this->assertTrue(wordsAddedOrRemoved('personal digital', 'personal digital assistant'));
-			$this->assertTrue(aIsSuperStringOfB('mum do you want to cook something', 'do you cook something mum'));
-			$this->assertTrue(punctuationChangesOccured('mum do you want to cook something', 'mum, do you want to cook something?'));
+            $this->assertTrue(aIsSuperStringOfB('mum do you want to cook something', 'do you cook something mum'));
+            $this->assertTrue(punctuationChangesOccured('mum do you want to cook something', 'mum, do you want to cook something?'));
         }
     }
 }
