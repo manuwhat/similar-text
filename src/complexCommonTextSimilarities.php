@@ -102,7 +102,7 @@ namespace EZAMA{
         }
         
         
-        public static function punctuactionChangesOccured($a, $b, $insensitive = true, $considerSpace = true)
+        public static function punctuationChangesOccured($a, $b, $insensitive = true, $considerSpace = true)
         {
             $filter = function($v) use ($considerSpace) {
                 return $considerSpace ? !(ctype_space($v) || ctype_punct($v)) : !ctype_punct($v);
