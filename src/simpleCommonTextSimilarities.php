@@ -22,7 +22,7 @@ namespace EZAMA{
         
         public static function similarButNotEqual($a, $b)
         {
-            return self::similarText($a, $b, 2, true, $check) && is_array($check)&&$check['similar'] === 100.0 && $check['equal'] === false;
+            return self::similarText($a, $b, 2, true, $check) && is_array($check) && $check['similar'] === 100.0 && $check['equal'] === false;
         }
         
         public static function aIsSuperStringOfB($a, $b)
@@ -36,7 +36,7 @@ namespace EZAMA{
         
         public static function wordsReorderOccured($a, $b, $considerPunctuation = true)
         {
-            $filter = function ($v) use ($considerPunctuation) {
+            $filter = function($v) use ($considerPunctuation) {
                 return $considerPunctuation ? !(ctype_space($v) || ctype_punct($v)) : !ctype_space($v);
             };
             return self::similarText($a, $b, 2, true, $check, true) && is_array($check) && self::wro_filter($check, $filter) ?true :false;
