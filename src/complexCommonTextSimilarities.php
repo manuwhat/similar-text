@@ -78,21 +78,33 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function($v) {
+            $filter = function ($v) {
                 return !(ctype_space($v));
             };
             self::filter($a, $b, $filter, true);
             return self::waorDiff($a, $b, count($a), count($b));
         }
         
-        private static function filter(&$a, &$b, $filter, $insensitive = true)
+        private static function filter(&$a, &$b, $filter, $insensitive = true, $captureLength=false)
         {
             if ($insensitive) {
-                $a = array_filter(self::getParts(self::strtolower($a)), $filter);
-                $b = array_filter(self::getParts(self::strtolower($b)), $filter);
+                $a = array_filter(self::getParts(self::strtolower($a), $c, $captureLength), $filter);
+                if ($c===1) {
+                    $a=self::strtolower($a);
+                }
+                $b = array_filter(self::getParts(self::strtolower($b), $c, $captureLength), $filter);
+                if ($c===1) {
+                    $b=self::strtolower($b);
+                }
             } else {
-                $a = array_filter(self::getParts(self::split($a)), $filter);
-                $b = array_filter(self::getParts(self::split($b)), $filter);
+                $a = array_filter(self::getParts(self::split($a), $c, $captureLength), $filter);
+                if ($c===1) {
+                    $a=self::strtolower($a);
+                }
+                $b = array_filter(self::getParts(self::split($b), $c, $captureLength), $filter);
+                if ($c===1) {
+                    $b=self::strtolower($b);
+                }
             }
         }
         
@@ -104,7 +116,7 @@ namespace EZAMA{
         
         public static function punctuationChangesOccured($a, $b, $insensitive = true, $considerSpace = true)
         {
-            $filter = function($v) use ($considerSpace) {
+            $filter = function ($v) use ($considerSpace) {
                 return $considerSpace ? !(ctype_space($v) || ctype_punct($v)) : !ctype_punct($v);
             };
             if (!is_string($a) || !is_string($b)) {
@@ -120,18 +132,18 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function($v) {
-                return !(ctype_space($v) || ctype_punct($v));
+            $filter = function ($v) {
+                return !(ctype_space($v[0]) || ctype_punct($v[0]));
             };
             
-            self::filter($a, $b, $filter, true);
+            self::filter($a, $b, $filter, true, true);
             return self::aoeStemming($a, $b);
         }
         
         private static function aoeStemming($a, $b)
         {
             foreach ($a as $index=>$word) {
-                if (!self::haveSameRoot($word, $b[$index]) || (isset($a[$index][2]) && isset($b[$index][2]))) {
+                if (!self::haveSameRoot($word[0], $b[$index][0]) || ($a[$index][1]>2 && $b[$index][1]>2)) {
                     return false;
                 }
             }

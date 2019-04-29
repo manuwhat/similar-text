@@ -43,7 +43,7 @@ use ezama/similar-text;
 ```
 
 This is an example of how to use the stats to check a special case.Here we will use them to check about anagrams
-(note that this has already been implemented in the library check the file similar_text.php to know more about all available implementation) 
+(note that this has already been implemented in the library check the file similar_text.php to know more about all available implementations) 
 
 ```php
 function areAnagrams($a, $b)
@@ -80,7 +80,7 @@ aIsSuperStringOfB_stripos('mum do you want to cook something', 'do you cook some
 aIsSuperStringOfB_PCRE('mum do you want to cook something', 'do you cook something mum');//return false;
 ```
 
-
+The library also contains common distance algorithms such unlimited string length levenshtein ,levenshtein-damerau ,jaro ,jaro-winkler ,hamming ,dice  implementation 
 ### How To run unit tests 
 ```bash
 phpunit  ./tests
