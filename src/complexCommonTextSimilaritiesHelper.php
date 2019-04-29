@@ -48,25 +48,25 @@ namespace EZAMA{
         }
         
         
-        protected static function filter(&$a, &$b, $filter, $insensitive = true, $captureLength=false)
+        protected static function filter(&$a, &$b, $filter, $insensitive = true, $captureLength = false)
         {
             if ($insensitive) {
                 $a = array_filter(self::getParts(self::strtolower($a), $c, $captureLength), $filter);
-                if ($c===1) {
-                    $a=self::strtolower($a);
+                if ($c === 1) {
+                    $a = self::strtolower($a);
                 }
                 $b = array_filter(self::getParts(self::strtolower($b), $c, $captureLength), $filter);
-                if ($c===1) {
-                    $b=self::strtolower($b);
+                if ($c === 1) {
+                    $b = self::strtolower($b);
                 }
             } else {
                 $a = array_filter(self::getParts(self::split($a), $c, $captureLength), $filter);
-                if ($c===1) {
-                    $a=self::strtolower($a);
+                if ($c === 1) {
+                    $a = self::strtolower($a);
                 }
                 $b = array_filter(self::getParts(self::split($b), $c, $captureLength), $filter);
-                if ($c===1) {
-                    $b=self::strtolower($b);
+                if ($c === 1) {
+                    $b = self::strtolower($b);
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace EZAMA{
         protected static function aoeStemming($a, $b)
         {
             foreach ($a as $index=>$word) {
-                if (!self::haveSameRoot($word[0], $b[$index][0]) || ($a[$index][1]>2 && $b[$index][1]>2)) {
+                if (!self::haveSameRoot($word[0], $b[$index][0]) || ($a[$index][1] > 2 && $b[$index][1] > 2)) {
                     return false;
                 }
             }

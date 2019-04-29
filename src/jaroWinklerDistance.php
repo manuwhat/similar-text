@@ -14,17 +14,17 @@
 namespace EZAMA{
     class jaroWinklerDistance extends distance
     {
-        public static function jaroWinkler($a, $b, $round=2)
+        public static function jaroWinkler($a, $b, $round = 2)
         {
-            if (!is_string($a)||!is_string($b)) {
+            if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            static $distance=array();
-            static $previous=array();
-            if (array($a,$b)===$previous) {
+            static $distance = array();
+            static $previous = array();
+            if (array($a, $b) === $previous) {
                 return $distance;
             }
-            $previous=array($a,$b);
+            $previous = array($a, $b);
             return self::getJWDistance($a, $b, $distance, $round);
         }
         
@@ -33,15 +33,15 @@ namespace EZAMA{
         private static function getJWDistance(&$a, &$b, &$distance, $round)
         {
             extract(self::prepareJaroWinkler($a, $b));
-            for ($i=0,$min=min(count((array)$a), count((array)$b)),$t=0;$i<$min;$i++) {
-                if ($a[$i]!==$b[$i]) {
+            for ($i = 0, $min = min(count((array) $a), count((array) $b)), $t = 0; $i < $min; $i++) {
+                if ($a[$i] !== $b[$i]) {
                     $t++;
                 }
             }
-            $t/=2;
-            $distance['jaro']=1/3*($corresponding/$ca+$corresponding/$cb+($corresponding-$t)/$corresponding);
-            $distance['jaro-winkler']=$distance['jaro']+(min($longCommonSubstr, 4)*0.1*(1-$distance['jaro']));
-            $distance=array_map(function ($v) use ($round) {
+            $t /= 2;
+            $distance['jaro'] = 1 / 3 * ($corresponding / $ca + $corresponding / $cb + ($corresponding - $t) / $corresponding);
+            $distance['jaro-winkler'] = $distance['jaro'] + (min($longCommonSubstr, 4) * 0.1 * (1 - $distance['jaro']));
+            $distance = array_map(function($v) use ($round) {
                 return round($v, $round);
             }, $distance);
             
@@ -50,15 +50,15 @@ namespace EZAMA{
         
         private static function prepareJaroWinkler(&$a, &$b)
         {
-            $a=self::split($a);
-            $b=self::split($b);
-            $transpositions=array('a'=>array(),'b'=>array(),'corresponding'=>0,'longCommonSubstr'=>0,'ca'=>count((array)$a),'cb'=>count((array)$b));
-            $Δ=max($transpositions['ca'], $transpositions['cb'])/2-1;
+            $a = self::split($a);
+            $b = self::split($b);
+            $transpositions = array('a'=>array(), 'b'=>array(), 'corresponding'=>0, 'longCommonSubstr'=>0, 'ca'=>count((array) $a), 'cb'=>count((array) $b));
+            $Δ = max($transpositions['ca'], $transpositions['cb']) / 2 - 1;
             self::jwMatches($a, $b, $transpositions, $Δ);
             ksort($transpositions['a']);
             ksort($transpositions['b']);
-            $transpositions['a']=array_values($transpositions['a']);
-            $transpositions['b']=array_values($transpositions['b']);
+            $transpositions['a'] = array_values($transpositions['a']);
+            $transpositions['b'] = array_values($transpositions['b']);
             return $transpositions;
         }
         
@@ -73,12 +73,12 @@ namespace EZAMA{
         
         private static function _jwMatches($chr, $char, $index, $ind, &$transpositions, $Δ)
         {
-            if ($chr===$char&&(abs($index-$ind)<=$Δ)) {
-                if ($ind!==$index) {
-                    $transpositions['a'][$ind]=$chr;
-                    $transpositions['b'][$index]=$char;
+            if ($chr === $char && (abs($index - $ind) <= $Δ)) {
+                if ($ind !== $index) {
+                    $transpositions['a'][$ind] = $chr;
+                    $transpositions['b'][$index] = $char;
                 } else {
-                    if ($ind-1<=$transpositions['longCommonSubstr']) {
+                    if ($ind - 1 <= $transpositions['longCommonSubstr']) {
                         $transpositions['longCommonSubstr']++;
                     }
                 }
