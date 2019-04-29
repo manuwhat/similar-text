@@ -70,7 +70,7 @@ namespace EZAMA{
                 }
             }
         }
-		
+        
         
         protected static function waorDiff($a, $b, $ca, $cb)
         {
