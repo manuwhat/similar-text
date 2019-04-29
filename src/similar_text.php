@@ -76,11 +76,23 @@ namespace EZAMA{
             return $stats;
         }
 
-        protected static function getParts($b, &$c = 0)
+        protected static function getParts($b, &$c = 0, $lengthCapture = false)
         {
             $parts = array();
             $tmp = '';
             $c = 0;
+            $length = 0;
+            $lengthCapture = (bool) $lengthCapture;
+            if ($lengthCapture) {
+                self::capturePartsWithLength($b, $length, $tmp, $c, $parts);
+            } else {
+                self::capturePartsWithoutLength($b, $tmp, $c, $parts);
+            }
+            return $parts;
+        }
+        
+        private static function capturePartsWithoutLength(&$b, $tmp, &$c, &$parts)
+        {
             foreach ($b as $k=>$v) {
                 if (ctype_space($v) || ctype_punct($v)) {
                     $parts[] = $tmp;
@@ -95,7 +107,26 @@ namespace EZAMA{
                 $parts[] = $tmp;
                 $c++;
             }
-            return $parts;
+        }
+        
+        private static function capturePartsWithLength(&$b, $length, $tmp, &$c, &$parts)
+        {
+            foreach ($b as $k=>$v) {
+                $length++;
+                if (ctype_space($v) || ctype_punct($v)) {
+                    $parts[] = array($tmp, $length - 1);
+                    $parts[] = array($v, 1);
+                    $c += 2;
+                    $tmp = '';
+                    $length = 0;
+                    continue;
+                }
+                $tmp .= $v;
+            }
+            if (!empty($tmp)) {
+                $parts[] = array($tmp, $length);
+                $c++;
+            }
         }
         
         
@@ -130,19 +161,32 @@ namespace EZAMA{
             }
         }
         
-        protected static function split($str)
+        protected static function split($str, $grams = false)
         {
             if (!is_string($str)) {
                 return array();
             }
             static $split = [];
             static $old = '';
-            if ($old === $str) {
+            static $oldGrams = 1;
+            $grams = is_int($grams) && $grams >= 1 && $grams <= strlen($str) ? $grams : false;
+            return self::getSplit($str, $split, $old, $oldGrams, $grams);
+        }
+        
+        private static function _split(&$str, &$split, &$old, &$oldGrams, $grams)
+        {
+            $old = $str;
+            $oldGrams = $grams;
+            $split = !$grams ? preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY) : preg_split('/(.{'.$grams.'})/su', $str, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            return $split;
+        }
+        
+        private static function getSplit(&$str, &$split, &$old, &$oldGrams, $grams)
+        {
+            if ($old === $str && $oldGrams === $grams) {
                 return $split;
             } else {
-                $old = $str;
-                $split = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
-                return $split;
+                return self::_split($str, $split, $old, $oldGrams, $grams);
             }
         }
     }

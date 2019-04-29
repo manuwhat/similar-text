@@ -12,7 +12,13 @@
 namespace{
     use EZAMA\similar_text;
     use EZAMA\simpleCommonTextSimilarities;
+    use EZAMA\complexCommonTextSimilaritiesHelper;
     use EZAMA\complexCommonTextSimilarities;
+    use EZAMA\distance;
+    use EZAMA\diceDistance;
+    use EZAMA\levenshteinDistance;
+    use EZAMA\jaroWinklerDistance;
+    use EZAMA\hammingDistance;
 
     function SimilarText(
         $firstString,
@@ -56,7 +62,7 @@ namespace{
     
     function wordsReorderOccured($a, $b, $considerPunctuation = true)
     {
-        return simpleCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
+        return complexCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
     }
     
     function punctuationChangesOccured($a, $b, $considerSpace = true)
@@ -83,4 +89,34 @@ namespace{
     {
         return complexCommonTextSimilarities::wordsAddedOrRemoved($a, $b);
     }
+    
+    function _levenshtein($a, $b)
+    {
+        return levenshteinDistance::levenshtein($a, $b);
+    }
+    
+    
+    function levenshteinDamerau($a, $b)
+    {
+        return levenshteinDistance::levenshteinDamerau($a, $b);
+    }
+    
+    
+    function dice($a, $b, $round = 2)
+    {
+        return diceDistance::dice($a, $b, $round);
+    }
+    
+    
+    function hamming($a, $b)
+    {
+        return hammingDistance::hamming($a, $b);
+    }
+    
+    
+    function jaroWinkler($a, $b, $round = 2)
+    {
+        return jaroWinklerDistance::jaroWinkler($a, $b, $round);
+    }
+    
 }
