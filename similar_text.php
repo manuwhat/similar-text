@@ -12,6 +12,7 @@
 namespace{
     use EZAMA\similar_text;
     use EZAMA\simpleCommonTextSimilarities;
+    use EZAMA\complexCommonTextSimilaritiesHelper;
     use EZAMA\complexCommonTextSimilarities;
     use EZAMA\distance;
     use EZAMA\diceDistance;

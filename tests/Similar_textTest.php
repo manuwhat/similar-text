@@ -2,6 +2,7 @@
 namespace Ezama\tests{
     require($DIR = (($dir = dirname(__DIR__)).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR)).'similar_text.php';
     require $DIR.'simpleCommonTextSimilarities.php';
+    require $DIR.'complexCommonTextSimilaritiesHelper.php';
     require $DIR.'complexCommonTextSimilarities.php';
     require $DIR.'distance.php';
     require $DIR.'diceDistance.php';
