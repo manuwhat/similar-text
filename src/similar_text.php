@@ -170,11 +170,7 @@ namespace EZAMA{
             static $old = '';
             static $oldGrams=1;
             $grams=is_int($grams) && $grams >=1 && $grams <= strlen($str) ? $grams : false;
-            if ($old === $str && $oldGrams===$grams) {
-                return $split;
-            } else {
-                return self::_split($str, $split, $old, $oldGrams, $grams);
-            }
+            return self::getSplit($str, $split, $old, $oldGrams, $grams);
         }
         
         private static function _split(&$str, &$split, &$old, &$oldGrams, $grams)
@@ -183,6 +179,15 @@ namespace EZAMA{
             $oldGrams=$grams;
             $split = !$grams ? preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY):preg_split('/(.{'.$grams.'})/su', $str, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
             return $split;
+        }
+        
+        private static function getSplit(&$str, &$split, &$old, &$oldGrams, $grams)
+        {
+            if ($old === $str && $oldGrams===$grams) {
+                return $split;
+            } else {
+                return self::_split($str, $split, $old, $oldGrams, $grams);
+            }
         }
     }
     

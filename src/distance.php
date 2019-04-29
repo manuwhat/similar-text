@@ -106,16 +106,9 @@ namespace EZAMA{
         
         public static function dice($a, $b, $round=2)
         {
-            if (!is_string($a)||!is_string($b)) {
-                return false;
+            if ($distance=in_array(self::handleVeryCommonDiceCases($a, $b), array(false,0.0,1.0), true)) {
+                return $distance;
             }
-            if (empty($a)||empty($b)) {
-                return 0.0;
-            }
-            if ($a===$b) {
-                return 1.0;
-            }
-            
             static $distance=0;
             static $previous=array();
             if (array($a,$b)===$previous) {
@@ -125,6 +118,19 @@ namespace EZAMA{
             $a=self::split($a, 2);
             $b=self::split($b, 2);
             return self::getDiceDistance($distance, $a, $b, $round);
+        }
+        
+        private static function handleVeryCommonDiceCases(&$a, &$b)
+        {
+            if (!is_string($a)||!is_string($b)) {
+                return false;
+            }
+            if (empty($a)||empty($b)) {
+                return 0.0;
+            }
+            if ($a===$b) {
+                return 1.0;
+            }
         }
         
         private static function getDiceDistance(&$distance, &$a, &$b, $round)
