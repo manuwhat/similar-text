@@ -45,7 +45,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function ($v) {
+            $filter = function($v) {
                 return !(ctype_space($v));
             };
             self::filter($a, $b, $filter, true);
@@ -55,7 +55,7 @@ namespace EZAMA{
         
         public static function punctuationChangesOccured($a, $b, $insensitive = true, $considerSpace = true)
         {
-            $filter = function ($v) use ($considerSpace) {
+            $filter = function($v) use ($considerSpace) {
                 return $considerSpace ? !(ctype_space($v) || ctype_punct($v)) : !ctype_punct($v);
             };
             if (!is_string($a) || !is_string($b)) {
@@ -71,7 +71,7 @@ namespace EZAMA{
             if (!is_string($a) || !is_string($b)) {
                 return false;
             }
-            $filter = function ($v) {
+            $filter = function($v) {
                 return !(ctype_space($v[0]) || ctype_punct($v[0]));
             };
             

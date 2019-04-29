@@ -41,7 +41,7 @@ namespace EZAMA{
             $t /= 2;
             $distance['jaro'] = 1 / 3 * ($corresponding / $ca + $corresponding / $cb + ($corresponding - $t) / $corresponding);
             $distance['jaro-winkler'] = $distance['jaro'] + (min($longCommonSubstr, 4) * 0.1 * (1 - $distance['jaro']));
-            $distance = array_map(function ($v) use ($round) {
+            $distance = array_map(function($v) use ($round) {
                 return round($v, $round);
             }, $distance);
             
