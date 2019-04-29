@@ -66,18 +66,23 @@ namespace EZAMA{
         {
             foreach ($a as $ind=>$chr) {
                 foreach ($b as $index=>$char) {
-                    if ($chr===$char&&(abs($index-$ind)<=$Δ)) {
-                        if ($ind!==$index) {
-                            $transpositions['a'][$ind]=$chr;
-                            $transpositions['b'][$index]=$char;
-                        } else {
-                            if ($ind-1<=$transpositions['longCommonSubstr']) {
-                                $transpositions['longCommonSubstr']++;
-                            }
-                        }
-                        $transpositions['corresponding']++;
+                    self::_jwMatches($chr, $char, $index, $ind, $transpositions, $Δ);
+                }
+            }
+        }
+        
+        private static function _jwMatches($chr, $char, $index, $ind, &$transpositions, $Δ)
+        {
+            if ($chr===$char&&(abs($index-$ind)<=$Δ)) {
+                if ($ind!==$index) {
+                    $transpositions['a'][$ind]=$chr;
+                    $transpositions['b'][$index]=$char;
+                } else {
+                    if ($ind-1<=$transpositions['longCommonSubstr']) {
+                        $transpositions['longCommonSubstr']++;
                     }
                 }
+                $transpositions['corresponding']++;
             }
         }
         
@@ -119,10 +124,14 @@ namespace EZAMA{
             $previous=array($a,$b);
             $a=self::split($a, 2);
             $b=self::split($b, 2);
+            return self::getDiceDistance($distance, $a, $b, $round);
+        }
+        
+        private static function getDiceDistance(&$distance, &$a, &$b, $round)
+        {
             $ca=($caGrams=count($a))*2-self::getEndStrLen($a);
             $cb=($cbGrams=count($b))*2-self::getEndStrLen($b);
             $distance=round(2*count($caGrams>$cbGrams?array_intersect($a, $b):array_intersect($b, $a))/($ca+$cb), $round);
-            return $distance;
         }
         
         private static function getEndStrLen($a)
@@ -190,15 +199,20 @@ namespace EZAMA{
             for ($x=1;$x<=$ca;$x++) {
                 $dis_new[0]=$x;
                 for ($y=1;$y<=$cb;$y++) {
-                    $c = ($a[$x-1] == $b[$y-1])?0:1;
-                    $dis_new[$y] = min($dis[$y]+1, $dis_new[$y-1]+1, $dis[$y-1]+$c);
-                    if ($damerau) {
-                        if ($x > 1 && $y > 1 && $a[$x-1] == $b[$y-2] && $a[$x-2] == $b[$y-1]) {
-                            $dis_new[$y]= min($dis_new[$y-1], $dis[$y-3] + $c) ;
-                        }
-                    }
+                    self::costMatrix($a, $b, $dis_new, $dis, $damerau, $x, $y);
                 }
                 $dis = $dis_new;
+            }
+        }
+        
+        private static function costMatrix(&$a, &$b, &$dis_new, &$dis, $damerau, $x, $y)
+        {
+            $c = ($a[$x-1] == $b[$y-1])?0:1;
+            $dis_new[$y] = min($dis[$y]+1, $dis_new[$y-1]+1, $dis[$y-1]+$c);
+            if ($damerau) {
+                if ($x > 1 && $y > 1 && $a[$x-1] == $b[$y-2] && $a[$x-2] == $b[$y-1]) {
+                    $dis_new[$y]= min($dis_new[$y-1], $dis[$y-3] + $c) ;
+                }
             }
         }
     }

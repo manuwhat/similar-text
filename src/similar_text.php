@@ -173,11 +173,16 @@ namespace EZAMA{
             if ($old === $str && $oldGrams===$grams) {
                 return $split;
             } else {
-                $old = $str;
-                $oldGrams=$grams;
-                $split = !$grams ? preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY):preg_split('/(.{'.$grams.'})/su', $str, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
-                return $split;
+                return self::_split($str, $split, $old, $oldGrams, $grams);
             }
+        }
+        
+        private static function _split(&$str, &$split, &$old, &$oldGrams, $grams)
+        {
+            $old = $str;
+            $oldGrams=$grams;
+            $split = !$grams ? preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY):preg_split('/(.{'.$grams.'})/su', $str, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+            return $split;
         }
     }
     
