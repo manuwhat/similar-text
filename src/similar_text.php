@@ -146,7 +146,7 @@ namespace EZAMA{
             if (is_array($split)) {
                 return
                     array_map(
-                        function($val) {
+                        function ($val) {
                             if (self::is_ascii($val)) {
                                 return strtolower($val);
                             }
