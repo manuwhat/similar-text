@@ -102,7 +102,7 @@ namespace{
     }
     
     
-    function dice($a, $b, $round=2)
+    function dice($a, $b, $round = 2)
     {
         return diceDistance::dice($a, $b, $round);
     }
@@ -114,7 +114,7 @@ namespace{
     }
     
     
-    function jaroWinkler($a, $b, $round=2)
+    function jaroWinkler($a, $b, $round = 2)
     {
         return jaroWinklerDistance::jaroWinkler($a, $b, $round);
     }
