@@ -77,10 +77,15 @@ namespace EZAMA{
             $c = ($a[$x-1] == $b[$y-1])?0:1;
             $dis_new[$y] = min($dis[$y]+1, $dis_new[$y-1]+1, $dis[$y-1]+$c);
             if ($damerau) {
-                if ($x > 1 && $y > 1 && $a[$x-1] == $b[$y-2] && $a[$x-2] == $b[$y-1]) {
-                    $dis_new[$y]= min($dis_new[$y-1], $dis[$y-3] + $c) ;
-                }
+                self::handleDamerau($a, $b, $dis_new, $dis, $x, $y ,$c);
             }
         }
+		
+		private static function handleDamerau(&$a, &$b, &$dis_new, &$dis, $x, $y, $c){
+			if ($x > 1 && $y > 1 && $a[$x-1] == $b[$y-2] && $a[$x-2] == $b[$y-1]) {
+                $dis_new[$y]= min($dis_new[$y-1], $dis[$y-3] + $c) ;
+            }
+		}
+		
     }
 }
