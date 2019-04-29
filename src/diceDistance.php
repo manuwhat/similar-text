@@ -55,10 +55,10 @@ namespace EZAMA{
         {
             if (function_exists('array_key_last')) {
                 $end = array_key_last($a);
-                $end = count(self::split($end))>1 ? 0 : 1;
+                $end = count((array)self::split($end))>1 ? 0 : 1;
             } else {
                 $end = end($a);
-                $end = count(self::split($end))>1 ? 0 : 1;
+                $end = count((array)self::split($end))>1 ? 0 : 1;
                 reset($a);
             }
             return $end;
