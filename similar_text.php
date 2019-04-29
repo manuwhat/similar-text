@@ -11,7 +11,13 @@
 **/
 namespace{
     use EZAMA\similar_text;
-    use EZAMA\Distance;
+    use EZAMA\simpleCommonTextSimilarities;
+    use EZAMA\complexCommonTextSimilarities;
+    use EZAMA\distance;
+    use EZAMA\diceDistance;
+    use EZAMA\levenshteinDistance;
+    use EZAMA\jaroWinklerDistance;
+    use EZAMA\hammingDistance;
 
     function SimilarText(
         $firstString,
@@ -35,81 +41,81 @@ namespace{
     
     function areAnagrams($a, $b)
     {
-        return Distance::areAnagrams($a, $b);
+        return simpleCommonTextSimilarities::areAnagrams($a, $b);
     }
     
     function similarButNotEqual($a, $b)
     {
-        return   Distance::similarButNotEqual($a, $b);
+        return   simpleCommonTextSimilarities::similarButNotEqual($a, $b);
     }
     
     function aIsSuperStringOfB($a, $b)
     {
-        return Distance::aIsSuperStringOfB($a, $b);
+        return simpleCommonTextSimilarities::aIsSuperStringOfB($a, $b);
     }
         
     function haveSameRoot($a, $b)
     {
-        return Distance::haveSameRoot($a, $b);
+        return simpleCommonTextSimilarities::haveSameRoot($a, $b);
     }
     
     function wordsReorderOccured($a, $b, $considerPunctuation = true)
     {
-        return Distance::wordsReorderOccured($a, $b, $considerPunctuation);
+        return complexCommonTextSimilarities::wordsReorderOccured($a, $b, $considerPunctuation);
     }
     
     function punctuationChangesOccured($a, $b, $considerSpace = true)
     {
-        return Distance::punctuationChangesOccured($a, $b, $considerSpace);
+        return complexCommonTextSimilarities::punctuationChangesOccured($a, $b, $considerSpace);
     }
     
     function areStems($a, $b)
     {
-        return Distance::areStems($a, $b);
+        return complexCommonTextSimilarities::areStems($a, $b);
     }
     
     function strippedUrl($a, $b)
     {
-        return Distance::strippedUrl($a, $b);
+        return complexCommonTextSimilarities::strippedUrl($a, $b);
     }
     
     function acronymOrExpanded($a, $b)
     {
-        return Distance::acronymOrExpanded($a, $b);
+        return complexCommonTextSimilarities::acronymOrExpanded($a, $b);
     }
     
     function wordsAddedOrRemoved($a, $b)
     {
-        return Distance::wordsAddedOrRemoved($a, $b);
+        return complexCommonTextSimilarities::wordsAddedOrRemoved($a, $b);
     }
     
     function _levenshtein($a, $b)
     {
-        return Distance::levenshtein($a, $b);
+        return levenshteinDistance::levenshtein($a, $b);
     }
     
     
     function levenshteinDamerau($a, $b)
     {
-        return Distance::levenshteinDamerau($a, $b);
+        return levenshteinDistance::levenshteinDamerau($a, $b);
     }
     
     
     function dice($a, $b, $round=2)
     {
-        return Distance::dice($a, $b, $round);
+        return diceDistance::dice($a, $b, $round);
     }
     
     
     function hamming($a, $b)
     {
-        return Distance::hamming($a, $b);
+        return hammingDistance::hamming($a, $b);
     }
     
     
     function jaroWinkler($a, $b, $round=2)
     {
-        return Distance::jaroWinkler($a, $b, $round);
+        return jaroWinklerDistance::jaroWinkler($a, $b, $round);
     }
     
 }
