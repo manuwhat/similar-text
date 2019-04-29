@@ -16,18 +16,18 @@ namespace EZAMA{
     {
         public static function hamming($a, $b)
         {
-            if (!is_string($a)||!is_string($b)||(strlen($a)!==strlen($b))) {
+            if (!is_string($a) || !is_string($b) || (strlen($a) !== strlen($b))) {
                 return false;
             }
-            static $distance=0;
-            static $previous=array();
-            if (array($a,$b)===$previous) {
+            static $distance = 0;
+            static $previous = array();
+            if (array($a, $b) === $previous) {
                 return $distance;
             }
-            $previous=array($a,$b);
-            $a=self::split($a);
-            $b=self::split($b);
-            $distance=count(array_diff_assoc((array)$a, (array)$b));
+            $previous = array($a, $b);
+            $a = self::split($a);
+            $b = self::split($b);
+            $distance = count(array_diff_assoc((array) $a, (array) $b));
             return $distance;
         }
     }
