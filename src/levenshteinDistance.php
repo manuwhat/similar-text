@@ -29,8 +29,8 @@ namespace EZAMA{
             $previous=array($a,$b);
             $a=self::split($a);
             $b=self::split($b);
-            $ca = count($a);
-            $cb = count($b);
+            $ca = count((array)$a);
+            $cb = count((array)$b);
             $dis = range(0, $cb);
             self::BuildLevenshteinCostMatrix($a, $b, $ca, $cb, $dis);
 
@@ -52,8 +52,8 @@ namespace EZAMA{
             $previous=array($a,$b);
             $a=self::split($a);
             $b=self::split($b);
-            $ca = count($a);
-            $cb = count($b);
+            $ca = count((array)$a);
+            $cb = count((array)$b);
             $dis = range(0, $cb);
             self::BuildLevenshteinCostMatrix($a, $b, $ca, $cb, $dis, true);
         

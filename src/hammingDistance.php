@@ -27,7 +27,7 @@ namespace EZAMA{
             $previous=array($a,$b);
             $a=self::split($a);
             $b=self::split($b);
-            $distance=count(array_diff_assoc($a, $b));
+            $distance=count(array_diff_assoc((array)$a, (array)$b));
             return $distance;
         }
     }

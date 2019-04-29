@@ -27,7 +27,8 @@ namespace EZAMA{
             $previous=array($a,$b);
             $a=self::split($a, 2);
             $b=self::split($b, 2);
-            return self::diceDistance($distance, $a, $b, $round);
+            self::diceDistance($distance, $a, $b, $round);
+            return $distance;
         }
         
         private static function handleVeryCommonDiceCases(&$a, &$b)

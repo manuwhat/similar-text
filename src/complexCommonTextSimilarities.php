@@ -65,7 +65,7 @@ namespace EZAMA{
             
             $a = self::getParts(self::strtolower($a));
             $b = self::getParts(self::strtolower($b));
-            foreach ($a as $index=>$word) {
+            foreach ((array)$a as $index=>$word) {
                 if (!self::haveSameRoot($word, $b[$index])) {
                     return false;
                 }

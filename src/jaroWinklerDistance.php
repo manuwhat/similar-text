@@ -33,7 +33,7 @@ namespace EZAMA{
         private static function getJWDistance(&$a, &$b, &$distance, $round)
         {
             extract(self::prepareJaroWinkler($a, $b));
-            for ($i=0,$min=min(count($a), count($b)),$t=0;$i<$min;$i++) {
+            for ($i=0,$min=min(count((array)$a), count((array)$b)),$t=0;$i<$min;$i++) {
                 if ($a[$i]!==$b[$i]) {
                     $t++;
                 }
@@ -52,7 +52,7 @@ namespace EZAMA{
         {
             $a=self::split($a);
             $b=self::split($b);
-            $transpositions=array('a'=>array(),'b'=>array(),'corresponding'=>0,'longCommonSubstr'=>0,'ca'=>count($a),'cb'=>count($b));
+            $transpositions=array('a'=>array(),'b'=>array(),'corresponding'=>0,'longCommonSubstr'=>0,'ca'=>count((array)$a),'cb'=>count((array)$b));
             $Δ=max($transpositions['ca'], $transpositions['cb'])/2-1;
             self::jwMatches($a, $b, $transpositions, $Δ);
             ksort($transpositions['a']);
